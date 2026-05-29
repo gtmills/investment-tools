@@ -131,3 +131,53 @@ If Wikipedia structure changes:
 ## License
 
 This script is provided as-is for educational and informational purposes.
+
+## Planned Tools (TODO)
+
+### High Priority
+
+1. **Graham Number Calculator**
+   - Calculate Benjamin Graham's intrinsic value: `√(22.5 × EPS × Book Value)`
+   - Show margin of safety vs current price
+   - Classic value investing fundamental
+   - Complements existing P/E and P/B analysis
+
+2. **Dividend Aristocrats Screener**
+   - Filter stocks with 25+ years consecutive dividend increases
+   - Rank by dividend yield, growth rate, payout ratio
+   - Calculate dividend safety score
+   - Income-focused investing tool
+
+3. **Historical Valuation Analyzer**
+   - Compare current P/E to 5-year average P/E
+   - Calculate valuation z-scores
+   - Identify if stock is cheap vs its own history
+   - Catch cyclical opportunities and mean reversion plays
+
+4. **Earnings Quality Analyzer**
+   - Compare earnings to cash flow
+   - Calculate accrual ratios
+   - Identify accounting red flags
+   - Prevent value traps
+
+### Medium Priority
+
+5. **Sector Rotation Analyzer**
+   - Relative value within sectors
+   - Sector-adjusted rankings
+   - Account for sector-specific valuation norms
+
+6. **Quality Score Ranker**
+   - Composite score: ROE, ROA, margins, consistency
+   - Pure quality ranking (separate from Magic Formula)
+
+### Lower Priority
+
+7. **Momentum + Value Hybrid**
+   - Combine value metrics with price momentum
+   - Avoid falling knives and value traps
+
+8. **Insider Trading Tracker**
+   - Track insider buying activity
+   - Combine with value metrics
+   - Requires SEC filing data integration
