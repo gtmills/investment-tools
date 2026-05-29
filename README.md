@@ -1,14 +1,38 @@
-# S&P 500 P/E Ratio Sorter
+# Investment Tools Suite
 
-A Python script that fetches all S&P 500 stocks and sorts them by their P/E (Price-to-Earnings) ratio from lowest to highest.
+A comprehensive Python-based toolkit for value investing analysis of S&P 500 stocks. This suite combines **8 specialized analysis tools** plus a **Master Aggregator** that ranks all stocks from 1-500 to identify the best investment opportunities.
 
-## Features
+## 🎯 Quick Start
 
-- Automatically fetches the current list of S&P 500 companies from Wikipedia
-- Retrieves comprehensive real-time stock data using Yahoo Finance API
-- Sorts stocks by P/E ratio (lowest to highest)
-- Exports results to Excel spreadsheet with multiple sheets
-- Shows summary statistics (min, max, average, median P/E ratios)
+**Run everything at once:**
+```bash
+python run_all_tools.py
+```
+
+This executes all 9 tools in sequence (~15-25 minutes) and generates the master rankings.
+
+## Overview
+
+This project provides eight specialized analysis tools plus a master aggregator:
+
+1. **Value Ranker** - Traditional value metrics (P/E, P/B, PEG)
+2. **Magic Formula** - Joel Greenblatt's quality + value strategy
+3. **Free Cash Flow Analyzer** - Cash generation metrics
+4. **Financial Health** - Altman Z-Score + Piotroski F-Score
+5. **Graham Calculator** - Benjamin Graham's intrinsic value
+6. **Dividend Aristocrats** - Dividend quality and consistency
+7. **Historical Valuation** - Sector-relative valuations
+8. **Earnings Quality** - Profitability and earnings analysis
+9. **Master Aggregator** - Combines all rankings (1-500 scale)
+
+## Key Features
+
+- **Comprehensive Analysis**: 8 different investment methodologies
+- **Master Rankings**: Composite scores from 1-500 (1 = best opportunity)
+- **Investment Grades**: A+ to F grading system
+- **Automated Workflow**: Run all tools with one command
+- **Excel Outputs**: Detailed spreadsheets for each analysis
+- **S&P 500 Coverage**: Analyzes all ~500 stocks
 
 ### Data Fields Included
 
@@ -48,85 +72,133 @@ A Python script that fetches all S&P 500 stocks and sorts them by their P/E (Pri
 - 52-Week High/Low
 - Average Volume
 
-## Requirements
+## Project Structure
 
-- Python 3.7 or higher
-- Internet connection
+```
+investment-tools/
+├── run_all_tools.py                    # Run all tools in sequence
+├── requirements.txt                     # Python dependencies
+├── README.md                           # This file
+│
+├── value-ranker/                       # Core data + value ranking
+│   ├── sp500_pe_sorter.py             # Data collector (run first!)
+│   ├── value_ranker.py                # P/E, P/B, PEG ranking
+│   └── VALUE_RANKER_README.md
+│
+├── magic-formula/                      # Greenblatt's strategy
+│   ├── magic_formula_screener.py
+│   └── README.md
+│
+├── fcf-analyzer/                       # Free cash flow analysis
+│   ├── fcf_analyzer.py
+│   └── README.md
+│
+├── financial-health/                   # Bankruptcy & quality scores
+│   ├── financial_health_dashboard.py
+│   └── README.md
+│
+├── graham-calculator/                  # Graham's intrinsic value
+│   ├── graham_calculator.py
+│   └── README.md
+│
+├── dividend-aristocrats/               # Dividend quality screening
+│   ├── dividend_aristocrats.py
+│   └── README.md
+│
+├── historical-valuation/               # Sector-relative analysis
+│   ├── historical_valuation.py
+│   └── README.md
+│
+├── earnings-quality/                   # Profitability analysis
+│   ├── earnings_quality.py
+│   └── README.md
+│
+└── master-aggregator/                  # Combines all rankings
+    ├── master_aggregator.py
+    └── README.md
+```
 
 ## Installation
 
-1. Install the required dependencies:
+### Requirements
+- Python 3.7 or higher
+- Internet connection
+
+### Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
 Or install individually:
-
 ```bash
-pip install requests beautifulsoup4 pandas yfinance lxml
+pip install requests beautifulsoup4 pandas yfinance lxml openpyxl
 ```
 
 ## Usage
 
-Run the script:
+### Option 1: Run Everything (Recommended)
 
 ```bash
+python run_all_tools.py
+```
+
+This runs all 9 tools in sequence and generates the master rankings. Takes 15-25 minutes.
+
+### Option 2: Run Tools Individually
+
+```bash
+# Step 1: Collect S&P 500 data (required first step)
+cd value-ranker
 python sp500_pe_sorter.py
+
+# Step 2: Run individual analysis tools (any order)
+python value_ranker.py
+cd ../magic-formula && python magic_formula_screener.py
+cd ../fcf-analyzer && python fcf_analyzer.py
+cd ../financial-health && python financial_health_dashboard.py
+cd ../graham-calculator && python graham_calculator.py
+cd ../dividend-aristocrats && python dividend_aristocrats.py
+cd ../historical-valuation && python historical_valuation.py
+cd ../earnings-quality && python earnings_quality.py
+
+# Step 3: Generate master rankings
+cd ../master-aggregator
+python master_aggregator.py
 ```
 
-The script will:
-1. Fetch the list of S&P 500 companies (~500 stocks)
-2. Retrieve comprehensive stock data for each stock (this may take a few minutes)
-3. Display the sorted results in the terminal
-4. Save the results to `sp500_pe_sorted.xlsx` (Excel format)
+## Master Rankings Output
 
-## Output
+The **Master Aggregator** produces `master_investment_rankings.xlsx` with:
 
-The script provides:
+### Investment Grades (A+ to F)
+- **A+ (Top 10%)**: Exceptional opportunities - highest conviction
+- **A (Top 20%)**: Excellent opportunities - strong candidates
+- **B+ (Top 30%)**: Very good opportunities
+- **B (Top 40%)**: Good opportunities
+- **C (40-60%)**: Average opportunities
+- **D/F (Bottom 40%)**: Below average - generally avoid
 
-- **Console output**: Formatted table showing key metrics for all stocks sorted by P/E ratio
-- **Excel file**: `sp500_pe_sorted.xlsx` containing:
-  - **Sheet 1 (Stocks with PE)**: All stocks with P/E data, sorted lowest to highest, with 25+ data fields
-  - **Sheet 2 (Stocks without PE)**: Companies without P/E data (negative earnings or unavailable)
-  - **Sheet 3 (Summary)**: Summary statistics and key metrics
+### Composite Scores (1-500)
+- **1-50**: Elite opportunities
+- **51-100**: Excellent opportunities
+- **101-200**: Good opportunities
+- **201-300**: Average opportunities
+- **300+**: Below average
 
-### Sample Output
+### Example Output
 
 ```
-================================================================================
-S&P 500 STOCKS SORTED BY P/E RATIO (LOWEST TO HIGHEST)
-================================================================================
-
-Stocks with P/E data: 485
-Stocks without P/E data: 15
-
-================================================================================
-
-Ticker  Company                    Sector        Price    Market Cap    P/E Ratio  Forward P/E  Dividend Yield  ROE      Debt/Equity
-------  -------------------------  ------------  -------  ------------  ---------  -----------  --------------  -------  -----------
-CI      The Cigna Group            Healthcare    278.22   75.2B         2.45       8.12         0.0523          0.145    0.89
-CHTR    Charter Communications     Communication 143.12   18.5B         3.87       6.45         0.0000          -0.234   4.56
+Rank  Ticker  Grade           Percentile  Avg_Rank  Tools  Value  Magic  FCF  Health  Graham  Dividend  Historical  Quality
+1     AAPL    A+ (Exceptional) 98.5%      12.3      8      15     8      10   5       20      18        12          15
+2     MSFT    A+ (Exceptional) 97.8%      15.7      8      22     12     8    12      15      25        18          10
+3     GOOGL   A (Excellent)    96.2%      18.9      8      18     15     12   8       25      30        15          20
 ...
 ```
 
-## Notes
+## Data Fields Collected
 
-- Some stocks may not have complete data (e.g., companies with negative earnings won't have P/E ratios)
-- The script includes a small delay between API calls to avoid rate limiting
-- P/E ratios are trailing P/E (based on last 12 months of earnings)
-- Data is fetched in real-time and reflects current market conditions
-- Market Cap and Enterprise Value are in actual dollar amounts (not abbreviated)
-- Percentages (margins, yields, growth rates) are in decimal format (0.15 = 15%)
-
-## Troubleshooting
-
-If you encounter rate limiting issues:
-- Increase the `time.sleep()` value in the script
-- Run the script during off-peak hours
-
-If Wikipedia structure changes:
-- The script may need updates to the web scraping logic
+The base data collector fetches 25+ metrics per stock:
 
 ## License
 
@@ -181,3 +253,137 @@ This script is provided as-is for educational and informational purposes.
    - Track insider buying activity
    - Combine with value metrics
    - Requires SEC filing data integration
+
+## Investment Strategy Guide
+
+### Conservative Approach
+1. Focus on **Grade A stocks** (top 20%)
+2. Require **7-8 tools coverage**
+3. Composite score **< 100**
+4. Research top 20 stocks thoroughly
+
+### Balanced Approach  
+1. Focus on **Grade A and B stocks** (top 40%)
+2. Require **6+ tools coverage**
+3. Composite score **< 200**
+4. Research top 50 stocks
+
+### Aggressive Approach
+1. Include **Grade B+ stocks** (top 30%)
+2. Accept **5+ tools coverage**
+3. Composite score **< 150**
+4. Research top 100 stocks
+
+## Best Practices
+
+1. **Start with Master Rankings**: Review `master_investment_rankings.xlsx` first
+2. **Focus on Grade A**: Top 20% have highest conviction
+3. **Verify Coverage**: Prefer stocks ranked by 7-8 tools
+4. **Research Thoroughly**: Rankings are starting point, not final answer
+5. **Check Individual Tools**: Understand why a stock ranks well
+6. **Diversify Sectors**: Don't concentrate in one industry
+7. **Update Regularly**: Re-run monthly or quarterly
+8. **Combine with Your Analysis**: Add qualitative factors
+
+## Tool Descriptions
+
+### 1. Value Ranker
+- **Metrics**: P/E, P/B, PEG ratios
+- **Best for**: Traditional value investors
+- **Output**: `sp500_value_ranked.xlsx`
+
+### 2. Magic Formula (Greenblatt)
+- **Metrics**: Earnings Yield + Return on Capital
+- **Best for**: Quality at reasonable prices
+- **Output**: `magic_formula_ranked.xlsx`
+
+### 3. Free Cash Flow Analyzer
+- **Metrics**: FCF Yield, FCF Growth
+- **Best for**: Cash generation focus
+- **Output**: `fcf_analysis.xlsx`
+- **Note**: Takes 5-10 minutes (fetches additional data)
+
+### 4. Financial Health Dashboard
+- **Metrics**: Altman Z-Score, Piotroski F-Score
+- **Best for**: Risk assessment, avoiding value traps
+- **Output**: `financial_health_analysis.xlsx`
+
+### 5. Graham Number Calculator
+- **Metrics**: Intrinsic value, Margin of safety
+- **Best for**: Conservative value investing
+- **Output**: `graham_number_analysis.xlsx`
+
+### 6. Dividend Aristocrats Screener
+- **Metrics**: Dividend yield, growth, safety, consistency
+- **Best for**: Income investors
+- **Output**: `dividend_aristocrats_analysis.xlsx`
+- **Note**: Takes 5-10 minutes (fetches dividend history)
+
+### 7. Historical Valuation Analyzer
+- **Metrics**: Sector-relative P/E and P/B
+- **Best for**: Mean reversion opportunities
+- **Output**: `historical_valuation_analysis.xlsx`
+
+### 8. Earnings Quality Analyzer
+- **Metrics**: Profit margins, ROE, ROA
+- **Best for**: Identifying high-quality earnings
+- **Output**: `earnings_quality_analysis.xlsx`
+
+### 9. Master Aggregator
+- **Combines**: All 8 tool rankings
+- **Output**: Composite scores 1-500, Investment grades A+ to F
+- **File**: `master_investment_rankings.xlsx`
+
+## Execution Time
+
+- **S&P 500 Data Collector**: 5-10 minutes
+- **Value Ranker**: < 1 minute
+- **Magic Formula**: < 1 minute
+- **FCF Analyzer**: 5-10 minutes
+- **Financial Health**: < 1 minute
+- **Graham Calculator**: < 1 minute
+- **Dividend Aristocrats**: 5-10 minutes
+- **Historical Valuation**: < 1 minute
+- **Earnings Quality**: < 1 minute
+- **Master Aggregator**: < 1 minute
+
+**Total**: 15-25 minutes for complete analysis
+
+## Troubleshooting
+
+**"sp500_pe_sorted.xlsx not found"**
+- Run `python value-ranker/sp500_pe_sorter.py` first
+
+**Rate limiting errors**
+- Increase `time.sleep()` values in scripts
+- Run during off-peak hours
+
+**Fewer stocks than expected**
+- Normal - some stocks lack required metrics
+- Negative earnings = no P/E ratio
+- Financial companies may lack certain data
+
+**Master Aggregator shows missing tools**
+- Run individual tools first
+- Aggregator works with available data
+
+## Important Notes
+
+- **Not Investment Advice**: These are quantitative screening tools only
+- **Requires Research**: Always investigate companies before investing
+- **Historical Data**: Past metrics don't guarantee future performance
+- **Quantitative Only**: No qualitative analysis (management, moats, etc.)
+- **Equal Weighting**: All tools weighted equally in aggregation
+- **Update Regularly**: Re-run monthly or quarterly for fresh data
+
+## References
+
+- **Magic Formula**: "The Little Book That Beats the Market" by Joel Greenblatt
+- **Graham Number**: "The Intelligent Investor" by Benjamin Graham
+- **FCF Analysis**: "The Little Book of Valuation" by Aswath Damodaran
+- **Altman Z-Score**: Edward Altman's bankruptcy prediction model
+- **Piotroski F-Score**: Joseph Piotroski's financial strength analysis
+
+## Contributing
+
+Each tool has its own detailed README with methodology, interpretation guides, and examples. See individual directories for more information.
