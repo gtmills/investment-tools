@@ -5,11 +5,48 @@ A Python script that fetches all S&P 500 stocks and sorts them by their P/E (Pri
 ## Features
 
 - Automatically fetches the current list of S&P 500 companies from Wikipedia
-- Retrieves real-time P/E ratio data using Yahoo Finance API
+- Retrieves comprehensive real-time stock data using Yahoo Finance API
 - Sorts stocks by P/E ratio (lowest to highest)
-- Displays company name, ticker, current price, and P/E ratio
-- Exports results to CSV file
+- Exports results to Excel spreadsheet with multiple sheets
 - Shows summary statistics (min, max, average, median P/E ratios)
+
+### Data Fields Included
+
+**Valuation Metrics:**
+- P/E Ratio (Trailing)
+- Forward P/E
+- PEG Ratio
+- Price/Book Ratio
+- Price/Sales Ratio
+
+**Market Metrics:**
+- Current Price
+- Market Cap
+- Enterprise Value
+- Sector & Industry
+
+**Profitability Metrics:**
+- Profit Margin
+- Operating Margin
+- Return on Equity (ROE)
+- Return on Assets (ROA)
+
+**Growth Metrics:**
+- Revenue Growth
+- Earnings Growth
+
+**Dividend Metrics:**
+- Dividend Yield
+- Payout Ratio
+
+**Financial Health:**
+- Debt/Equity Ratio
+- Current Ratio
+
+**Trading Metrics:**
+- Beta
+- 52-Week High/Low
+- Average Volume
 
 ## Requirements
 
@@ -40,17 +77,19 @@ python sp500_pe_sorter.py
 
 The script will:
 1. Fetch the list of S&P 500 companies (~500 stocks)
-2. Retrieve P/E ratio data for each stock (this may take a few minutes)
+2. Retrieve comprehensive stock data for each stock (this may take a few minutes)
 3. Display the sorted results in the terminal
-4. Save the results to `sp500_pe_sorted.csv`
+4. Save the results to `sp500_pe_sorted.xlsx` (Excel format)
 
 ## Output
 
 The script provides:
 
-- **Console output**: Formatted table showing all stocks sorted by P/E ratio
-- **CSV file**: `sp500_pe_sorted.csv` containing the sorted data
-- **Summary statistics**: Min, max, average, and median P/E ratios
+- **Console output**: Formatted table showing key metrics for all stocks sorted by P/E ratio
+- **Excel file**: `sp500_pe_sorted.xlsx` containing:
+  - **Sheet 1 (Stocks with PE)**: All stocks with P/E data, sorted lowest to highest, with 25+ data fields
+  - **Sheet 2 (Stocks without PE)**: Companies without P/E data (negative earnings or unavailable)
+  - **Sheet 3 (Summary)**: Summary statistics and key metrics
 
 ### Sample Output
 
@@ -64,19 +103,21 @@ Stocks without P/E data: 15
 
 ================================================================================
 
-Ticker  Company                          Price    P/E Ratio
-------  -------------------------------  -------  ----------
-XYZ     Example Corp                     45.23    5.67
-ABC     Another Company                  123.45   8.92
+Ticker  Company                    Sector        Price    Market Cap    P/E Ratio  Forward P/E  Dividend Yield  ROE      Debt/Equity
+------  -------------------------  ------------  -------  ------------  ---------  -----------  --------------  -------  -----------
+CI      The Cigna Group            Healthcare    278.22   75.2B         2.45       8.12         0.0523          0.145    0.89
+CHTR    Charter Communications     Communication 143.12   18.5B         3.87       6.45         0.0000          -0.234   4.56
 ...
 ```
 
 ## Notes
 
-- Some stocks may not have P/E ratio data (e.g., companies with negative earnings)
+- Some stocks may not have complete data (e.g., companies with negative earnings won't have P/E ratios)
 - The script includes a small delay between API calls to avoid rate limiting
 - P/E ratios are trailing P/E (based on last 12 months of earnings)
 - Data is fetched in real-time and reflects current market conditions
+- Market Cap and Enterprise Value are in actual dollar amounts (not abbreviated)
+- Percentages (margins, yields, growth rates) are in decimal format (0.15 = 15%)
 
 ## Troubleshooting
 
