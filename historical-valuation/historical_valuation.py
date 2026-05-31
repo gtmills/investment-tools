@@ -12,7 +12,7 @@ import time
 import numpy as np
 
 
-def load_stock_data(filename: str = '../value-ranker/sp500_pe_sorted.xlsx') -> pd.DataFrame:
+def load_stock_data(filename: str = 'value-ranker/sp500_pe_sorted.xlsx') -> pd.DataFrame:
     """Load stock data from Excel file"""
     try:
         df = pd.read_excel(filename, sheet_name='Stocks with PE')

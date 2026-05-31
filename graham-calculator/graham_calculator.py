@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 
-def load_stock_data(filename: str = '../value-ranker/sp500_pe_sorted.xlsx') -> pd.DataFrame:
+def load_stock_data(filename: str = 'value-ranker/sp500_pe_sorted.xlsx') -> pd.DataFrame:
     """
     Load stock data from Excel file
     
@@ -53,23 +53,23 @@ def calculate_graham_number(df: pd.DataFrame) -> pd.DataFrame:
     
     # Calculate EPS from P/E ratio and current price
     # EPS = Price / P/E Ratio
-    graham_df['EPS'] = graham_df['Current Price'] / graham_df['P/E Ratio']
+    graham_df['EPS'] = graham_df['Price'] / graham_df['P/E Ratio']
     
     # Calculate Book Value per Share from Price/Book ratio and current price
     # Book Value per Share = Price / (Price/Book)
-    graham_df['Book_Value_Per_Share'] = graham_df['Current Price'] / graham_df['Price/Book']
+    graham_df['Book_Value_Per_Share'] = graham_df['Price'] / graham_df['Price/Book']
     
     # Calculate Graham Number: √(22.5 × EPS × Book Value per Share)
     graham_df['Graham_Number'] = (22.5 * graham_df['EPS'] * graham_df['Book_Value_Per_Share']) ** 0.5
     
     # Calculate Margin of Safety
-    # Margin of Safety = (Graham Number - Current Price) / Graham Number
+    # Margin of Safety = (Graham Number - Price) / Graham Number
     # Positive = undervalued, Negative = overvalued
-    graham_df['Margin_of_Safety'] = (graham_df['Graham_Number'] - graham_df['Current Price']) / graham_df['Graham_Number']
+    graham_df['Margin_of_Safety'] = (graham_df['Graham_Number'] - graham_df['Price']) / graham_df['Graham_Number']
     
     # Calculate Graham Number Ratio (Current Price / Graham Number)
     # < 1.0 = undervalued, > 1.0 = overvalued
-    graham_df['Graham_Ratio'] = graham_df['Current Price'] / graham_df['Graham_Number']
+    graham_df['Graham_Ratio'] = graham_df['Price'] / graham_df['Graham_Number']
     
     # Filter stocks with valid data
     required_cols = ['Graham_Number', 'Margin_of_Safety', 'Graham_Ratio']
@@ -114,7 +114,7 @@ def display_results(df: pd.DataFrame, top_n: int = 50):
     print(f"\n{'='*140}")
     print(f"TOP {top_n} UNDERVALUED STOCKS - BENJAMIN GRAHAM'S INTRINSIC VALUE")
     print(f"{'='*140}")
-    print(f"\nGraham Number = √(22.5 × EPS × Book Value per Share)")
+    print(f"\nGraham Number = sqrt(22.5 x EPS x Book Value per Share)")
     print(f"Margin of Safety = (Graham Number - Current Price) / Graham Number")
     print(f"Graham Ratio = Current Price / Graham Number (< 1.0 = undervalued)")
     print(f"\n{'='*140}\n")
@@ -122,7 +122,7 @@ def display_results(df: pd.DataFrame, top_n: int = 50):
     # Select columns to display
     display_cols = [
         'Overall_Rank', 'Ticker', 'Company', 'Sector',
-        'Current Price', 'Graham_Number', 'Graham_Ratio', 'Margin_of_Safety',
+        'Price', 'Graham_Number', 'Graham_Ratio', 'Margin_of_Safety',
         'EPS', 'Book_Value_Per_Share', 'P/E Ratio', 'Price/Book',
         'Market Cap', 'ROE', 'Debt/Equity'
     ]

@@ -34,13 +34,13 @@ def run_tool(name: str, script_path: str, description: str) -> bool:
             text=True,
             check=True
         )
-        print(f"\n✓ {name} completed successfully")
+        print(f"\n[SUCCESS] {name} completed successfully")
         return True
     except subprocess.CalledProcessError as e:
-        print(f"\n✗ {name} failed with error code {e.returncode}")
+        print(f"\n[FAILED] {name} failed with error code {e.returncode}")
         return False
     except Exception as e:
-        print(f"\n✗ {name} failed: {e}")
+        print(f"\n[FAILED] {name} failed: {e}")
         return False
 
 
@@ -64,7 +64,8 @@ def main():
     print(" 10. Master Aggregator (<1 min)")
     print("\n" + "="*140)
     
-    input("\nPress Enter to start, or Ctrl+C to cancel...")
+    # Auto-start without confirmation
+    print("\nStarting analysis automatically...")
     
     start_time = time.time()
     results = {}
@@ -129,7 +130,7 @@ def main():
         results[tool['name']] = success
         
         if not success and tool['name'] == 'S&P 500 Data Collector':
-            print("\n✗ Data collection failed. Cannot continue.")
+            print("\n[ERROR] Data collection failed. Cannot continue.")
             sys.exit(1)
         
         # Small delay between tools
@@ -148,7 +149,7 @@ def main():
     print(f"Failed: {failed}/{len(results)}")
     print(f"\nResults by tool:")
     for name, success in results.items():
-        status = "✓ Success" if success else "✗ Failed"
+        status = "[SUCCESS]" if success else "[FAILED]"
         print(f"  {status}: {name}")
     
     if failed == 0:

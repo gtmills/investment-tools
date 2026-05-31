@@ -32,13 +32,13 @@ def load_rankings(tool_name: str, filename: str, rank_column: str) -> pd.DataFra
         df = df[['Ticker', rank_column]].copy()
         df.columns = ['Ticker', tool_name]
         
-        print(f"✓ Loaded {len(df)} stocks from {tool_name}")
+        print(f"[SUCCESS] Loaded {len(df)} stocks from {tool_name}")
         return df
     except FileNotFoundError:
-        print(f"✗ {tool_name} - File not found: {filename}")
+        print(f"[FAILED] {tool_name} - File not found: {filename}")
         return pd.DataFrame(columns=['Ticker', tool_name])
     except Exception as e:
-        print(f"✗ {tool_name} - Error loading: {e}")
+        print(f"[FAILED] {tool_name} - Error loading: {e}")
         return pd.DataFrame(columns=['Ticker', tool_name])
 
 
@@ -57,35 +57,35 @@ def aggregate_rankings() -> pd.DataFrame:
     # Define all tools and their ranking files
     tools = {
         'Value_Ranker': {
-            'file': '../value-ranker/sp500_value_ranked.xlsx',
+            'file': 'value-ranker/sp500_value_ranked.xlsx',
             'rank_col': 'Overall_Rank'
         },
         'Magic_Formula': {
-            'file': '../magic-formula/magic_formula_ranked.xlsx',
+            'file': 'magic_formula_ranked.xlsx',
             'rank_col': 'MF_Rank'
         },
         'FCF_Analyzer': {
-            'file': '../fcf-analyzer/fcf_analysis.xlsx',
+            'file': 'fcf_analysis.xlsx',
             'rank_col': 'FCF_Rank'
         },
         'Financial_Health': {
-            'file': '../financial-health/financial_health_analysis.xlsx',
+            'file': 'financial_health_analysis.xlsx',
             'rank_col': 'Health_Rank'
         },
         'Graham_Calculator': {
-            'file': '../graham-calculator/graham_number_analysis.xlsx',
+            'file': 'graham_number_analysis.xlsx',
             'rank_col': 'Graham_Rank'
         },
         'Dividend_Aristocrats': {
-            'file': '../dividend-aristocrats/dividend_aristocrats_analysis.xlsx',
+            'file': 'dividend_aristocrats_analysis.xlsx',
             'rank_col': 'Dividend_Rank'
         },
         'Historical_Valuation': {
-            'file': '../historical-valuation/historical_valuation_analysis.xlsx',
+            'file': 'historical_valuation_analysis.xlsx',
             'rank_col': 'Historical_Rank'
         },
         'Earnings_Quality': {
-            'file': '../earnings-quality/earnings_quality_analysis.xlsx',
+            'file': 'earnings_quality_analysis.xlsx',
             'rank_col': 'Quality_Rank'
         }
     }
@@ -101,7 +101,7 @@ def aggregate_rankings() -> pd.DataFrame:
             loaded_tools.append(tool_name)
     
     if len(rankings_list) == 0:
-        print("\n✗ No tool rankings found. Please run the individual tools first.")
+        print("\n[ERROR] No tool rankings found. Please run the individual tools first.")
         sys.exit(1)
     
     print(f"\n{'='*140}")

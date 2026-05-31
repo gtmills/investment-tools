@@ -11,7 +11,7 @@ from pathlib import Path
 import time
 
 
-def load_stock_data(filename: str = '../value-ranker/sp500_pe_sorted.xlsx') -> pd.DataFrame:
+def load_stock_data(filename: str = 'value-ranker/sp500_pe_sorted.xlsx') -> pd.DataFrame:
     """
     Load stock data from Excel file
     
