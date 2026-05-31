@@ -69,11 +69,13 @@ python master_aggregator.py
 
 **Sheet 1: Top 100 Opportunities**
 - Best 100 stocks by composite score
+- Includes company names for easy identification
 - Quick reference for top picks
 
 **Sheet 2: All Rankings**
 - Complete dataset with all tool rankings
 - Individual ranks from each tool
+- Company names included alongside tickers
 
 **Sheet 3: Grade A Stocks**
 - Top 20% (80th percentile and above)
