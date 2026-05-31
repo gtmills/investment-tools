@@ -257,9 +257,14 @@ The base data collector fetches 25+ metrics per stock.
    - Track significant ranking changes
    - Notify when new stocks enter top 50
 
+10. **~~Timestamp Outputs~~** ✅
+   - ✅ CSV files include timestamps in filenames (YYYYMMDD_HHMM format)
+   - ✅ Excel files include "Last Updated" field in Methodology sheet
+   - ✅ Enables tracking multiple analysis runs
+
 ### Quick Wins
 
-5. **Timestamp Outputs**
+5. **Market Cap Distribution Analysis**
     - Include data collection date in filenames
     - Add "Last Updated" field in Excel files
 

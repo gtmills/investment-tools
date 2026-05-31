@@ -9,6 +9,7 @@ import sys
 from pathlib import Path
 import os
 import time
+from datetime import datetime
 
 
 def load_rankings(tool_name: str, filename: str, rank_column: str) -> pd.DataFrame:
@@ -234,7 +235,7 @@ def display_results(df: pd.DataFrame, loaded_tools: list, top_n: int = 50):
         print(f"  #{row['Composite_Score']}: {row['Ticker']}{company} - {row['Investment_Grade']} (Percentile: {row['Percentile']:.1f}%)")
 
 
-def save_results(df: pd.DataFrame, loaded_tools: list, filename: str = 'master_investment_rankings.xlsx', export_csv: bool = True):
+def save_results(df: pd.DataFrame, loaded_tools: list, filename: str = 'master_investment_rankings.xlsx', export_csv: bool = True, timestamp: str = ''):
     """
     Save aggregated results to Excel file and optionally CSV
     
@@ -243,6 +244,7 @@ def save_results(df: pd.DataFrame, loaded_tools: list, filename: str = 'master_i
         loaded_tools: List of tool names
         filename: Excel output filename
         export_csv: Whether to also export CSV files
+        timestamp: Timestamp string for display (e.g., "2026-05-31 16:50")
     """
     # Try to save Excel file with retry logic
     max_retries = 3
@@ -292,7 +294,9 @@ def save_results(df: pd.DataFrame, loaded_tools: list, filename: str = 'master_i
                         '',
                         'Important Notes',
                         'Important Notes',
-                        'Important Notes'
+                        'Important Notes',
+                        '',
+                        'Last Updated'
                     ],
                     'Description': [
                         'Combines rankings from all investment analysis tools',
@@ -320,7 +324,9 @@ def save_results(df: pd.DataFrame, loaded_tools: list, filename: str = 'master_i
                         '',
                         'This is a quantitative screening tool only',
                         'Always research companies before investing',
-                        'Not investment advice'
+                        'Not investment advice',
+                        '',
+                        f'Last Updated: {timestamp if timestamp else "N/A"}'
                     ]
                 })
                 methodology.to_excel(writer, sheet_name='Methodology', index=False)
@@ -341,21 +347,23 @@ def save_results(df: pd.DataFrame, loaded_tools: list, filename: str = 'master_i
     # Export CSV files if requested
     if export_csv:
         csv_dir = 'csv-exports'
-        import os
         os.makedirs(csv_dir, exist_ok=True)
         
-        # Export top 100
-        csv_top100 = f'{csv_dir}/top_100_opportunities.csv'
+        # Generate timestamp for CSV filenames
+        csv_timestamp = datetime.now().strftime('%Y%m%d_%H%M')
+        
+        # Export top 100 opportunities
+        csv_top100 = f'{csv_dir}/top_100_opportunities_{csv_timestamp}.csv'
         df.head(100).to_csv(csv_top100, index=False)
         print(f"CSV export: {csv_top100}")
         
         # Export all rankings
-        csv_all = f'{csv_dir}/all_rankings.csv'
+        csv_all = f'{csv_dir}/all_rankings_{csv_timestamp}.csv'
         df.to_csv(csv_all, index=False)
         print(f"CSV export: {csv_all}")
         
         # Export Grade A stocks
-        csv_grade_a = f'{csv_dir}/grade_a_stocks.csv'
+        csv_grade_a = f'{csv_dir}/grade_a_stocks_{csv_timestamp}.csv'
         df[df['Percentile'] >= 80].to_csv(csv_grade_a, index=False)
         print(f"CSV export: {csv_grade_a}")
     
@@ -364,14 +372,17 @@ def save_results(df: pd.DataFrame, loaded_tools: list, filename: str = 'master_i
 
 def main():
     """Main execution function"""
+    # Generate timestamp for this run
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M')
+    
     # Aggregate all rankings
     df, loaded_tools = aggregate_rankings()
     
     # Display results
     display_results(df, loaded_tools, top_n=50)
     
-    # Save to Excel
-    save_results(df, loaded_tools)
+    # Save to Excel with timestamp
+    save_results(df, loaded_tools, timestamp=timestamp)
     
     print("\n" + "="*140)
     print("MASTER AGGREGATION COMPLETE")
