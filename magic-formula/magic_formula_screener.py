@@ -151,7 +151,6 @@ def save_results(df: pd.DataFrame, filename: str = 'magic_formula_ranked.xlsx'):
     try:
         # Create standardized ranking output (Ticker and Rank only for aggregation)
         ranking_output = df[['Ticker', 'MF_Rank']].copy()
-        ranking_output.columns = ['Ticker', 'Magic_Formula_Rank']
         
         # Select columns for detailed output
         output_cols = [

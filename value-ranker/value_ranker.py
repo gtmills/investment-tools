@@ -127,17 +127,19 @@ def display_results(df: pd.DataFrame, top_n: int = 50):
 
 def save_results(df: pd.DataFrame, source_filename: str):
     """
-    Save ranked results to the same Excel file as new sheets
+    Save ranked results to a new Excel file
     
     Args:
         df: Ranked DataFrame
-        source_filename: Original Excel filename to append sheets to
+        source_filename: Original Excel filename (for reference)
     """
     if len(df) == 0:
         return
     
+    # Create output filename
+    output_filename = 'value-ranker/sp500_value_ranked.xlsx'
+    
     try:
-        from openpyxl import load_workbook
         
         # Select all relevant columns
         output_cols = [
@@ -150,22 +152,15 @@ def save_results(df: pd.DataFrame, source_filename: str):
         # Only include columns that exist
         available_cols = [col for col in output_cols if col in df.columns]
         
-        # Load existing workbook
-        book = load_workbook(source_filename)
+        # Create standardized ranking output for aggregation (Ticker and Rank only)
+        ranking_output = df[['Ticker', 'Overall_Rank']].copy()
         
-        # Remove old ranking sheets if they exist
-        sheets_to_remove = ['Value Rankings', 'Top 50 Value Stocks', 'Value Methodology']
-        for sheet_name in sheets_to_remove:
-            if sheet_name in book.sheetnames:
-                del book[sheet_name]
-        
-        # Save the workbook first
-        book.save(source_filename)
-        book.close()
-        
-        # Now append new sheets using pandas ExcelWriter in append mode
-        with pd.ExcelWriter(source_filename, engine='openpyxl', mode='a') as writer:
-            # Write full ranked list
+        # Create new Excel file with all sheets
+        with pd.ExcelWriter(output_filename, engine='openpyxl') as writer:
+            # Sheet 1: Standardized ranking for aggregation (Ticker + Rank only)
+            ranking_output.to_excel(writer, sheet_name='Rankings', index=False)
+            
+            # Sheet 2: Full ranked list with all details
             df[available_cols].to_excel(writer, sheet_name='Value Rankings', index=False)
             
             # Write top 50
@@ -200,10 +195,11 @@ def save_results(df: pd.DataFrame, source_filename: str):
             methodology.to_excel(writer, sheet_name='Value Methodology', index=False)
         
         print(f"\n{'='*120}")
-        print(f"Value rankings added to: {source_filename}")
-        print(f"  - New Sheet: Value Rankings (all {len(df)} stocks)")
-        print(f"  - New Sheet: Top 50 Value Stocks")
-        print(f"  - New Sheet: Value Methodology")
+        print(f"Results saved to: {output_filename}")
+        print(f"  - Sheet 1: Rankings (standardized format for aggregation)")
+        print(f"  - Sheet 2: Value Rankings (all {len(df)} stocks with full data)")
+        print(f"  - Sheet 3: Top 50 Value Stocks")
+        print(f"  - Sheet 4: Value Methodology")
         print(f"{'='*120}")
         
     except Exception as e:
