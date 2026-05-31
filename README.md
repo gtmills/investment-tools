@@ -200,6 +200,87 @@ Rank  Ticker  Grade           Percentile  Avg_Rank  Tools  Value  Magic  FCF  He
 
 The base data collector fetches 25+ metrics per stock.
 
+## Future Enhancements (TODO)
+
+### High Priority
+
+1. **Fix Value Ranker & Magic Formula Integration**
+   - Value Ranker: Update to use 'Rankings' sheet format
+   - Magic Formula: Fix column name mismatches
+   - Currently only 6/8 tools load in Master Aggregator
+
+2. **Add Sector/Industry to Master Rankings**
+   - Include Sector and Industry columns from source data
+   - Enable sector-based filtering and analysis
+   - Support diversification decisions
+
+3. **Historical Tracking System**
+   - Save dated copies of master rankings
+   - Track ranking changes over time
+   - Identify consistent performers vs volatile rankings
+   - Generate trend analysis reports
+
+### Medium Priority
+
+4. **Sector-Adjusted Rankings**
+   - Calculate rankings within each sector
+   - Identify best stock per sector
+   - Account for sector-specific valuation norms
+
+5. **Portfolio Builder Tool**
+   - Generate diversified portfolios from top-ranked stocks
+   - Apply constraints: max % per sector, max % per stock
+   - Optimize for composite score while diversifying
+
+6. **Backtesting Framework**
+   - Test strategy performance with historical data
+   - Compare against S&P 500 benchmark
+   - Calculate returns, Sharpe ratio, max drawdown
+
+7. **Alert System**
+   - Monitor stocks moving into Grade A
+   - Track significant ranking changes
+   - Notify when new stocks enter top 50
+
+### Quick Wins
+
+8. **Summary Statistics**
+   - Average P/E of top 50 stocks
+   - Average dividend yield by grade
+   - Sector concentration metrics
+   - Market cap distribution
+
+9. **CSV Export Option**
+   - Add CSV export alongside Excel
+   - Lighter format for programmatic analysis
+
+10. **Timestamp Outputs**
+    - Include data collection date in filenames
+    - Add "Last Updated" field in Excel files
+
+### Advanced Features
+
+11. **Visualization Dashboard**
+    - Grade distribution charts
+    - Top 20 stocks bar chart
+    - Sector breakdown analysis
+    - Tool coverage heatmap
+
+12. **Momentum Overlay**
+    - Add 3/6/12-month price momentum
+    - Combine value + momentum strategy
+    - Avoid falling knives
+
+13. **Insider Trading Integration**
+    - Track SEC Form 4 filings
+    - Monitor insider buying/selling
+    - Combine with value rankings
+
+14. **Web Interface**
+    - Flask/Streamlit web app
+    - Interactive filtering and sorting
+    - Drill-down to individual tool details
+
 ## License
 
 This script is provided as-is for educational and informational purposes.
