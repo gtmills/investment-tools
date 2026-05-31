@@ -182,6 +182,48 @@ def classify_investment_grade(percentile: float) -> str:
         return 'F (Very Poor)'
 
 
+def calculate_sector_rankings(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Calculate rankings within each sector
+    
+    Args:
+        df: DataFrame with overall rankings and Sector column
+        
+    Returns:
+        DataFrame with sector-specific rankings and best stock per sector
+    """
+    if 'Sector' not in df.columns:
+        print("\n[WARNING] Sector column not found. Skipping sector-adjusted rankings.")
+        return pd.DataFrame()
+    
+    # Filter out stocks without sector information
+    df_with_sector = df[df['Sector'].notna()].copy()
+    
+    if len(df_with_sector) == 0:
+        print("\n[WARNING] No stocks with sector information. Skipping sector-adjusted rankings.")
+        return pd.DataFrame()
+    
+    # Calculate sector-specific rankings based on Composite_Score
+    df_with_sector['Sector_Rank'] = df_with_sector.groupby('Sector')['Composite_Score'].rank(method='min')
+    
+    # Calculate sector percentile
+    df_with_sector['Sector_Percentile'] = df_with_sector.groupby('Sector')['Composite_Score'].rank(pct=True) * 100
+    
+    # Get best stock per sector (lowest Composite_Score = best)
+    best_per_sector = df_with_sector.loc[df_with_sector.groupby('Sector')['Composite_Score'].idxmin()].copy()
+    
+    # Sort by overall Composite_Score
+    best_per_sector = best_per_sector.sort_values('Composite_Score')
+    
+    # Select relevant columns for display
+    columns_to_show = ['Ticker', 'Company', 'Sector', 'Composite_Score', 'Investment_Grade',
+                       'Percentile', 'Sector_Rank', 'Sector_Percentile', 'Average_Rank', 'Tools_Count']
+    
+    best_per_sector = best_per_sector[columns_to_show]
+    
+    return best_per_sector
+
+
 def display_results(df: pd.DataFrame, loaded_tools: list, top_n: int = 50):
     """Display aggregated results"""
     print(f"\n{'='*140}")
@@ -233,6 +275,19 @@ def display_results(df: pd.DataFrame, loaded_tools: list, top_n: int = 50):
     for i, row in df.head(10).iterrows():
         company = f" ({row['Company']})" if 'Company' in row and pd.notna(row['Company']) else ""
         print(f"  #{row['Composite_Score']}: {row['Ticker']}{company} - {row['Investment_Grade']} (Percentile: {row['Percentile']:.1f}%)")
+    
+    # Best stock per sector
+    if 'Sector' in df.columns:
+        sector_rankings = calculate_sector_rankings(df)
+        if not sector_rankings.empty:
+            print(f"\n{'='*140}")
+            print("BEST STOCK PER SECTOR")
+            print(f"{'='*140}")
+            print(f"Showing the top-ranked stock in each sector\n")
+            
+            for i, row in sector_rankings.iterrows():
+                company = f" ({row['Company']})" if 'Company' in row and pd.notna(row['Company']) else ""
+                print(f"  {row['Sector']:25s} -> {row['Ticker']:6s}{company:40s} - Rank #{int(row['Composite_Score'])} overall, #{int(row['Sector_Rank'])} in sector")
 
 
 def save_results(df: pd.DataFrame, loaded_tools: list, filename: str = 'master_investment_rankings.xlsx', export_csv: bool = True, timestamp: str = ''):
@@ -266,7 +321,12 @@ def save_results(df: pd.DataFrame, loaded_tools: list, filename: str = 'master_i
                 grade_b = df[(df['Percentile'] >= 60) & (df['Percentile'] < 80)].copy()
                 grade_b.to_excel(writer, sheet_name='Grade B Stocks', index=False)
                 
-                # Sheet 5: Methodology
+                # Sheet 5: Best Stock Per Sector
+                sector_rankings = calculate_sector_rankings(df)
+                if not sector_rankings.empty:
+                    sector_rankings.to_excel(writer, sheet_name='Best Per Sector', index=False)
+                
+                # Sheet 6: Methodology
                 methodology = pd.DataFrame({
                     'Section': [
                         'Master Aggregator',

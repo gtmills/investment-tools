@@ -235,12 +235,13 @@ The base data collector fetches 25+ metrics per stock.
    - ✅ Exports: top 100, all rankings, Grade A stocks
    - ✅ Lighter format for programmatic analysis
 
-### High Priority
+4. **~~Sector-Adjusted Rankings~~** ✅
+   - ✅ Calculate rankings within each sector
+   - ✅ Identify best stock per sector (displayed in console and Excel)
+   - ✅ New "Best Per Sector" Excel sheet showing top stock in each sector
+   - ✅ Sector-specific percentile rankings
 
-4. **Sector-Adjusted Rankings**
-   - Calculate rankings within each sector
-   - Identify best stock per sector
-   - Account for sector-specific valuation norms
+### High Priority
 
 5. **Portfolio Builder Tool**
    - Generate diversified portfolios from top-ranked stocks
