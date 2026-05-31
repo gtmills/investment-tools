@@ -42,6 +42,21 @@ def load_rankings(tool_name: str, filename: str, rank_column: str) -> pd.DataFra
         return pd.DataFrame(columns=['Ticker', tool_name])
 
 
+def load_company_names() -> pd.DataFrame:
+    """
+    Load company names from the source data file
+    
+    Returns:
+        DataFrame with Ticker and Company columns
+    """
+    try:
+        df = pd.read_excel('sp500_pe_sorted.xlsx', sheet_name='Stocks with PE')
+        return df[['Ticker', 'Company']].copy()
+    except Exception as e:
+        print(f"Warning: Could not load company names: {e}")
+        return pd.DataFrame(columns=['Ticker', 'Company'])
+
+
 def aggregate_rankings() -> pd.DataFrame:
     """
     Aggregate rankings from all tools
@@ -113,9 +128,15 @@ def aggregate_rankings() -> pd.DataFrame:
     for df in rankings_list[1:]:
         merged_df = merged_df.merge(df, on='Ticker', how='outer')
     
+    # Add company names
+    company_names = load_company_names()
+    if len(company_names) > 0:
+        merged_df = merged_df.merge(company_names, on='Ticker', how='left')
+        print(f"Added company names for {merged_df['Company'].notna().sum()} stocks\n")
+    
     # Calculate average rank (lower is better)
     # Only average across tools where the stock has a ranking
-    rank_columns = [col for col in merged_df.columns if col != 'Ticker']
+    rank_columns = [col for col in merged_df.columns if col not in ['Ticker', 'Company']]
     
     # Calculate average rank (ignoring NaN values)
     merged_df['Average_Rank'] = merged_df[rank_columns].mean(axis=1, skipna=True)
@@ -169,7 +190,7 @@ def display_results(df: pd.DataFrame, loaded_tools: list, top_n: int = 50):
     print(f"\n{'='*140}\n")
     
     # Select columns to display
-    display_cols = ['Composite_Score', 'Ticker', 'Investment_Grade', 'Percentile', 
+    display_cols = ['Composite_Score', 'Ticker', 'Company', 'Investment_Grade', 'Percentile',
                     'Average_Rank', 'Tools_Count'] + loaded_tools
     
     # Filter to available columns
@@ -201,7 +222,8 @@ def display_results(df: pd.DataFrame, loaded_tools: list, top_n: int = 50):
     
     print(f"\nTop 10 Best Opportunities:")
     for i, row in df.head(10).iterrows():
-        print(f"  #{row['Composite_Score']}: {row['Ticker']} - {row['Investment_Grade']} (Percentile: {row['Percentile']:.1f}%)")
+        company = f" ({row['Company']})" if 'Company' in row and pd.notna(row['Company']) else ""
+        print(f"  #{row['Composite_Score']}: {row['Ticker']}{company} - {row['Investment_Grade']} (Percentile: {row['Percentile']:.1f}%)")
 
 
 def save_results(df: pd.DataFrame, loaded_tools: list, filename: str = 'master_investment_rankings.xlsx'):
