@@ -13,7 +13,7 @@ This executes all 9 tools in sequence (~15-25 minutes) and generates the master 
 
 ## Overview
 
-This project provides eight specialized analysis tools plus a master aggregator:
+This project provides eight specialized analysis tools, a master aggregator, and a historical tracker:
 
 1. **Value Ranker** - Traditional value metrics (P/E, P/B, PEG)
 2. **Magic Formula** - Joel Greenblatt's quality + value strategy
@@ -24,6 +24,7 @@ This project provides eight specialized analysis tools plus a master aggregator:
 7. **Historical Valuation** - Sector-relative valuations
 8. **Earnings Quality** - Profitability and earnings analysis
 9. **Master Aggregator** - Combines all rankings (1-500 scale)
+10. **Historical Tracker** - Track ranking changes over time
 
 ## Key Features
 
@@ -113,8 +114,12 @@ investment-tools/
 │   ├── earnings_quality.py
 │   └── README.md
 │
-└── master-aggregator/                  # Combines all rankings
-    ├── master_aggregator.py
+├── master-aggregator/                  # Combines all rankings
+│   ├── master_aggregator.py
+│   └── README.md
+│
+└── historical-tracker/                 # Track changes over time
+    ├── historical_tracker.py
     └── README.md
 ```
 
@@ -364,6 +369,12 @@ This script is provided as-is for educational and informational purposes.
 - **Combines**: All 8 tool rankings
 - **Output**: Composite scores 1-500, Investment grades A+ to F
 - **File**: `master_investment_rankings.xlsx`
+
+### 10. Historical Tracker
+- **Tracks**: Ranking changes over time
+- **Features**: Trend analysis, biggest movers, new entries
+- **Output**: Dated snapshots and comparison reports
+- **File**: `historical-data/rankings_YYYY-MM-DD.xlsx`
 
 ## Execution Time
 
