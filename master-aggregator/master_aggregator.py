@@ -42,19 +42,19 @@ def load_rankings(tool_name: str, filename: str, rank_column: str) -> pd.DataFra
         return pd.DataFrame(columns=['Ticker', tool_name])
 
 
-def load_company_names() -> pd.DataFrame:
+def load_company_info() -> pd.DataFrame:
     """
-    Load company names from the source data file
+    Load company information from the source data file
     
     Returns:
-        DataFrame with Ticker and Company columns
+        DataFrame with Ticker, Company, Sector, and Industry columns
     """
     try:
         df = pd.read_excel('sp500_pe_sorted.xlsx', sheet_name='Stocks with PE')
-        return df[['Ticker', 'Company']].copy()
+        return df[['Ticker', 'Company', 'Sector', 'Industry']].copy()
     except Exception as e:
-        print(f"Warning: Could not load company names: {e}")
-        return pd.DataFrame(columns=['Ticker', 'Company'])
+        print(f"Warning: Could not load company information: {e}")
+        return pd.DataFrame(columns=['Ticker', 'Company', 'Sector', 'Industry'])
 
 
 def aggregate_rankings() -> pd.DataFrame:
@@ -128,15 +128,15 @@ def aggregate_rankings() -> pd.DataFrame:
     for df in rankings_list[1:]:
         merged_df = merged_df.merge(df, on='Ticker', how='outer')
     
-    # Add company names
-    company_names = load_company_names()
-    if len(company_names) > 0:
-        merged_df = merged_df.merge(company_names, on='Ticker', how='left')
-        print(f"Added company names for {merged_df['Company'].notna().sum()} stocks\n")
+    # Add company information (names, sector, industry)
+    company_info = load_company_info()
+    if len(company_info) > 0:
+        merged_df = merged_df.merge(company_info, on='Ticker', how='left')
+        print(f"Added company information for {merged_df['Company'].notna().sum()} stocks\n")
     
     # Calculate average rank (lower is better)
     # Only average across tools where the stock has a ranking
-    rank_columns = [col for col in merged_df.columns if col not in ['Ticker', 'Company']]
+    rank_columns = [col for col in merged_df.columns if col not in ['Ticker', 'Company', 'Sector', 'Industry']]
     
     # Calculate average rank (ignoring NaN values)
     merged_df['Average_Rank'] = merged_df[rank_columns].mean(axis=1, skipna=True)
@@ -190,7 +190,7 @@ def display_results(df: pd.DataFrame, loaded_tools: list, top_n: int = 50):
     print(f"\n{'='*140}\n")
     
     # Select columns to display
-    display_cols = ['Composite_Score', 'Ticker', 'Company', 'Investment_Grade', 'Percentile',
+    display_cols = ['Composite_Score', 'Ticker', 'Company', 'Sector', 'Investment_Grade', 'Percentile',
                     'Average_Rank', 'Tools_Count'] + loaded_tools
     
     # Filter to available columns
