@@ -207,25 +207,35 @@ The base data collector fetches 25+ metrics per stock.
 
 ## Future Enhancements (TODO)
 
+### ✅ Completed
+
+1. **~~Fix Value Ranker & Magic Formula Integration~~** ✅
+   - ✅ Value Ranker: Updated to use 'Rankings' sheet format
+   - ✅ Magic Formula: Fixed column name mismatches
+   - ✅ All 8/8 tools now load successfully in Master Aggregator
+
+2. **~~Add Sector/Industry to Master Rankings~~** ✅
+   - ✅ Sector and Industry columns included from source data
+   - ✅ Sector-based filtering and analysis enabled
+   - ✅ Supports diversification decisions
+
+3. **~~Historical Tracking System~~** ✅
+   - ✅ Saves dated copies of master rankings to historical-data/
+   - ✅ Tracks ranking changes over time
+   - ✅ Identifies consistent performers vs volatile rankings
+   - ✅ Generates trend analysis reports with biggest movers
+
+8. **~~Summary Statistics~~** ✅
+   - ✅ Sector concentration metrics in top 50 stocks
+   - ✅ Investment grade distribution
+   - ✅ Tool coverage statistics
+
+9. **~~CSV Export Option~~** ✅
+   - ✅ CSV export alongside Excel (csv-exports/ directory)
+   - ✅ Exports: top 100, all rankings, Grade A stocks
+   - ✅ Lighter format for programmatic analysis
+
 ### High Priority
-
-1. **Fix Value Ranker & Magic Formula Integration**
-   - Value Ranker: Update to use 'Rankings' sheet format
-   - Magic Formula: Fix column name mismatches
-   - Currently only 6/8 tools load in Master Aggregator
-
-2. **Add Sector/Industry to Master Rankings**
-   - Include Sector and Industry columns from source data
-   - Enable sector-based filtering and analysis
-   - Support diversification decisions
-
-3. **Historical Tracking System**
-   - Save dated copies of master rankings
-   - Track ranking changes over time
-   - Identify consistent performers vs volatile rankings
-   - Generate trend analysis reports
-
-### Medium Priority
 
 4. **Sector-Adjusted Rankings**
    - Calculate rankings within each sector
@@ -249,17 +259,7 @@ The base data collector fetches 25+ metrics per stock.
 
 ### Quick Wins
 
-8. **Summary Statistics**
-   - Average P/E of top 50 stocks
-   - Average dividend yield by grade
-   - Sector concentration metrics
-   - Market cap distribution
-
-9. **CSV Export Option**
-   - Add CSV export alongside Excel
-   - Lighter format for programmatic analysis
-
-10. **Timestamp Outputs**
+5. **Timestamp Outputs**
     - Include data collection date in filenames
     - Add "Last Updated" field in Excel files
 

@@ -8,6 +8,7 @@ import pandas as pd
 import sys
 from pathlib import Path
 import os
+import time
 
 
 def load_rankings(tool_name: str, filename: str, rank_column: str) -> pd.DataFrame:
@@ -220,93 +221,144 @@ def display_results(df: pd.DataFrame, loaded_tools: list, top_n: int = 50):
     for grade, count in grade_counts.items():
         print(f"  {grade}: {count} stocks ({count/len(df)*100:.1f}%)")
     
+    # Sector concentration in top stocks
+    if 'Sector' in df.columns:
+        print(f"\nSector Distribution (Top 50 Stocks):")
+        top_50_sectors = df.head(50)['Sector'].value_counts()
+        for sector, count in top_50_sectors.head(10).items():
+            print(f"  {sector}: {count} stocks ({count/50*100:.1f}%)")
+    
     print(f"\nTop 10 Best Opportunities:")
     for i, row in df.head(10).iterrows():
         company = f" ({row['Company']})" if 'Company' in row and pd.notna(row['Company']) else ""
         print(f"  #{row['Composite_Score']}: {row['Ticker']}{company} - {row['Investment_Grade']} (Percentile: {row['Percentile']:.1f}%)")
 
 
-def save_results(df: pd.DataFrame, loaded_tools: list, filename: str = 'master_investment_rankings.xlsx'):
-    """Save aggregated results to Excel file"""
-    with pd.ExcelWriter(filename, engine='openpyxl') as writer:
-        # Sheet 1: Top 100 Opportunities
-        top_100 = df.head(100).copy()
-        top_100.to_excel(writer, sheet_name='Top 100 Opportunities', index=False)
-        
-        # Sheet 2: All Rankings
-        df.to_excel(writer, sheet_name='All Rankings', index=False)
-        
-        # Sheet 3: Grade A Stocks (Top 20%)
-        grade_a = df[df['Percentile'] >= 80].copy()
-        grade_a.to_excel(writer, sheet_name='Grade A Stocks', index=False)
-        
-        # Sheet 4: Grade B Stocks (60-80%)
-        grade_b = df[(df['Percentile'] >= 60) & (df['Percentile'] < 80)].copy()
-        grade_b.to_excel(writer, sheet_name='Grade B Stocks', index=False)
-        
-        # Sheet 5: Methodology
-        methodology = pd.DataFrame({
-            'Section': [
-                'Master Aggregator',
-                'Master Aggregator',
-                'Master Aggregator',
-                '',
-                'Composite Score',
-                'Composite Score',
-                'Composite Score',
-                '',
-                'Investment Grades',
-                'Investment Grades',
-                'Investment Grades',
-                'Investment Grades',
-                'Investment Grades',
-                'Investment Grades',
-                '',
-                'Tools Included',
-                'Tools Included',
-                '',
-                'How to Use',
-                'How to Use',
-                'How to Use',
-                'How to Use',
-                '',
-                'Important Notes',
-                'Important Notes',
-                'Important Notes'
-            ],
-            'Description': [
-                'Combines rankings from all investment analysis tools',
-                'Calculates average rank across all tools',
-                'Lower composite score = better overall opportunity',
-                '',
-                'Composite Score: 1 to ~500 (1 = best)',
-                'Average Rank: Mean of individual tool ranks',
-                'Percentile: 0-100 (higher = better)',
-                '',
-                'A+ (90-100%): Exceptional opportunities',
-                'A (80-90%): Excellent opportunities',
-                'B+ (70-80%): Very good opportunities',
-                'B (60-70%): Good opportunities',
-                'C (40-60%): Average opportunities',
-                'D/F (<40%): Below average opportunities',
-                '',
-                f'Currently using {len(loaded_tools)} tools:',
-                ', '.join(loaded_tools),
-                '',
-                'Focus on Grade A and B stocks',
-                'Research top 50 stocks in detail',
-                'Diversify across sectors',
-                'Combine with your own analysis',
-                '',
-                'This is a quantitative screening tool only',
-                'Always research companies before investing',
-                'Not investment advice'
-            ]
-        })
-        methodology.to_excel(writer, sheet_name='Methodology', index=False)
+def save_results(df: pd.DataFrame, loaded_tools: list, filename: str = 'master_investment_rankings.xlsx', export_csv: bool = True):
+    """
+    Save aggregated results to Excel file and optionally CSV
+    
+    Args:
+        df: DataFrame with aggregated rankings
+        loaded_tools: List of tool names
+        filename: Excel output filename
+        export_csv: Whether to also export CSV files
+    """
+    # Try to save Excel file with retry logic
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            with pd.ExcelWriter(filename, engine='openpyxl') as writer:
+                # Sheet 1: Top 100 Opportunities
+                top_100 = df.head(100).copy()
+                top_100.to_excel(writer, sheet_name='Top 100 Opportunities', index=False)
+                
+                # Sheet 2: All Rankings
+                df.to_excel(writer, sheet_name='All Rankings', index=False)
+                
+                # Sheet 3: Grade A Stocks (Top 20%)
+                grade_a = df[df['Percentile'] >= 80].copy()
+                grade_a.to_excel(writer, sheet_name='Grade A Stocks', index=False)
+                
+                # Sheet 4: Grade B Stocks (60-80%)
+                grade_b = df[(df['Percentile'] >= 60) & (df['Percentile'] < 80)].copy()
+                grade_b.to_excel(writer, sheet_name='Grade B Stocks', index=False)
+                
+                # Sheet 5: Methodology
+                methodology = pd.DataFrame({
+                    'Section': [
+                        'Master Aggregator',
+                        'Master Aggregator',
+                        'Master Aggregator',
+                        '',
+                        'Composite Score',
+                        'Composite Score',
+                        'Composite Score',
+                        '',
+                        'Investment Grades',
+                        'Investment Grades',
+                        'Investment Grades',
+                        'Investment Grades',
+                        'Investment Grades',
+                        'Investment Grades',
+                        '',
+                        'Tools Included',
+                        'Tools Included',
+                        '',
+                        'How to Use',
+                        'How to Use',
+                        'How to Use',
+                        'How to Use',
+                        '',
+                        'Important Notes',
+                        'Important Notes',
+                        'Important Notes'
+                    ],
+                    'Description': [
+                        'Combines rankings from all investment analysis tools',
+                        'Calculates average rank across all tools',
+                        'Lower composite score = better overall opportunity',
+                        '',
+                        'Composite Score: 1 to ~500 (1 = best)',
+                        'Average Rank: Mean of individual tool ranks',
+                        'Percentile: 0-100 (higher = better)',
+                        '',
+                        'A+ (90-100%): Exceptional opportunities',
+                        'A (80-90%): Excellent opportunities',
+                        'B+ (70-80%): Very good opportunities',
+                        'B (60-70%): Good opportunities',
+                        'C (40-60%): Average opportunities',
+                        'D/F (<40%): Below average opportunities',
+                        '',
+                        f'Currently using {len(loaded_tools)} tools:',
+                        ', '.join(loaded_tools),
+                        '',
+                        'Focus on Grade A and B stocks',
+                        'Research top 50 stocks in detail',
+                        'Diversify across sectors',
+                        'Combine with your own analysis',
+                        '',
+                        'This is a quantitative screening tool only',
+                        'Always research companies before investing',
+                        'Not investment advice'
+                    ]
+                })
+                methodology.to_excel(writer, sheet_name='Methodology', index=False)
+            break  # Success, exit retry loop
+        except PermissionError:
+            if attempt < max_retries - 1:
+                print(f"\n[WARNING] File '{filename}' is locked (possibly open in Excel).")
+                print(f"Retrying in 2 seconds... (Attempt {attempt + 2}/{max_retries})")
+                time.sleep(2)
+            else:
+                print(f"\n[ERROR] Could not save '{filename}' - file is locked.")
+                print("Please close the file in Excel and run the script again.")
+                print("\nCSV exports will still be created if enabled.")
     
     print(f"\n{'='*140}")
     print(f"Results saved to {filename}")
+    
+    # Export CSV files if requested
+    if export_csv:
+        csv_dir = 'csv-exports'
+        import os
+        os.makedirs(csv_dir, exist_ok=True)
+        
+        # Export top 100
+        csv_top100 = f'{csv_dir}/top_100_opportunities.csv'
+        df.head(100).to_csv(csv_top100, index=False)
+        print(f"CSV export: {csv_top100}")
+        
+        # Export all rankings
+        csv_all = f'{csv_dir}/all_rankings.csv'
+        df.to_csv(csv_all, index=False)
+        print(f"CSV export: {csv_all}")
+        
+        # Export Grade A stocks
+        csv_grade_a = f'{csv_dir}/grade_a_stocks.csv'
+        df[df['Percentile'] >= 80].to_csv(csv_grade_a, index=False)
+        print(f"CSV export: {csv_grade_a}")
+    
     print(f"{'='*140}")
 
 
