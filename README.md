@@ -13,7 +13,7 @@ This executes all 9 tools in sequence (~15-25 minutes) and generates the master 
 
 ## Overview
 
-This project provides eight specialized analysis tools, a master aggregator, a historical tracker, a portfolio builder, an alert system, and a visualization dashboard:
+This project provides eight specialized analysis tools, a master aggregator, a historical tracker, a portfolio builder, an alert system, a visualization dashboard, and a momentum overlay:
 
 1. **Value Ranker** - Traditional value metrics (P/E, P/B, PEG)
 2. **Magic Formula** - Joel Greenblatt's quality + value strategy
@@ -28,6 +28,7 @@ This project provides eight specialized analysis tools, a master aggregator, a h
 11. **Portfolio Builder** - Generate diversified portfolios with constraints
 12. **Alert System** - Monitor ranking changes and significant movements
 13. **Visualization Dashboard** - Create charts and graphs for analysis
+14. **Momentum Overlay** - Add price momentum to value rankings
 
 ## Key Features
 
@@ -133,8 +134,12 @@ investment-tools/
 │   ├── alert_system.py
 │   └── README.md
 │
-└── visualization-dashboard/            # Create visualizations
-    ├── visualization_dashboard.py
+├── visualization-dashboard/            # Create visualizations
+│   ├── visualization_dashboard.py
+│   └── README.md
+│
+└── momentum-overlay/                   # Add momentum metrics
+    ├── momentum_overlay.py
     └── README.md
 ```
 
@@ -222,7 +227,14 @@ The base data collector fetches 25+ metrics per stock.
 
 ## Completed Features
 
-1. **Visualization Dashboard** ✅
+1. **Momentum Overlay** ✅
+   - Adds 3M, 6M, and 12M price returns to all stocks
+   - Identifies Value + Momentum opportunities
+   - Warns about Falling Knives (value traps)
+   - Momentum scoring and categorization
+   - Combines value and momentum strategies
+
+2. **Visualization Dashboard** ✅
    - Creates 6 professional charts and graphs
    - Grade distribution, top stocks, sector breakdown
    - Tool coverage heatmap for conviction analysis
@@ -230,7 +242,7 @@ The base data collector fetches 25+ metrics per stock.
    - Comprehensive summary dashboard
    - High-resolution PNG outputs (300 DPI)
 
-2. **Alert System** ✅
+3. **Alert System** ✅
    - Monitors stocks moving into Grade A/A+
    - Tracks significant ranking changes (+/- 50 positions)
    - Identifies new entries to top 50
@@ -238,7 +250,7 @@ The base data collector fetches 25+ metrics per stock.
    - Generates detailed Excel reports with all alerts
    - Timestamped outputs for tracking
 
-3. **Portfolio Builder Tool** ✅
+4. **Portfolio Builder Tool** ✅
    - Generates diversified portfolios from top-ranked stocks
    - Applies sector concentration limits (max 25-35% per sector)
    - Enforces position size constraints (max 8-12% per stock)
@@ -246,44 +258,44 @@ The base data collector fetches 25+ metrics per stock.
    - Equal-weight allocation within constraints
    - Detailed Excel reports with holdings and sector breakdown
 
-4. **Fix Value Ranker & Magic Formula Integration** ✅
+5. **Fix Value Ranker & Magic Formula Integration** ✅
    - Value Ranker: Updated to use 'Rankings' sheet format
    - Magic Formula: Fixed column name mismatches
    - All 8/8 tools now load successfully in Master Aggregator
 
-5. **Add Sector/Industry to Master Rankings** ✅
+6. **Add Sector/Industry to Master Rankings** ✅
    - Sector and Industry columns included from source data
    - Sector-based filtering and analysis enabled
    - Supports diversification decisions
 
-6. **Historical Tracking System** ✅
+7. **Historical Tracking System** ✅
    - Saves dated copies of master rankings to historical-data/
    - Tracks ranking changes over time
    - Identifies consistent performers vs volatile rankings
    - Generates trend analysis reports with biggest movers
 
-7. **Sector-Adjusted Rankings** ✅
+8. **Sector-Adjusted Rankings** ✅
    - Calculate rankings within each sector
    - Identify best stock per sector (displayed in console and Excel)
    - New "Best Per Sector" Excel sheet showing top stock in each sector
    - Sector-specific percentile rankings
 
-8. **Summary Statistics** ✅
+9. **Summary Statistics** ✅
    - Sector concentration metrics in top 50 stocks
    - Investment grade distribution
    - Tool coverage statistics
 
-9. **CSV Export Option** ✅
+10. **CSV Export Option** ✅
    - CSV export alongside Excel (csv-exports/ directory)
    - Exports: top 100, all rankings, Grade A stocks
    - Lighter format for programmatic analysis
 
-10. **Timestamp Outputs** ✅
+11. **Timestamp Outputs** ✅
    - CSV files include timestamps in filenames (YYYYMMDD_HHMM format)
    - Excel files include "Last Updated" field in Methodology sheet
    - Enables tracking multiple analysis runs
 
-11. **Market Cap Distribution Analysis** ✅
+12. **Market Cap Distribution Analysis** ✅
    - Displays market cap breakdown for top 50 stocks
    - Categories: Mega Cap ($200B+), Large Cap ($10B-$200B), Mid Cap ($2B-$10B), Small Cap (<$2B)
    - Shows count and percentage per category
@@ -306,17 +318,12 @@ The base data collector fetches 25+ metrics per stock.
     - Sector breakdown analysis
     - Tool coverage heatmap
 
-2. **Momentum Overlay**
-    - Add 3/6/12-month price momentum
-    - Combine value + momentum strategy
-    - Avoid falling knives
-
-3. **Insider Trading Integration**
+2. **Insider Trading Integration**
     - Track SEC Form 4 filings
     - Monitor insider buying/selling
     - Combine with value rankings
 
-4. **Web Interface**
+3. **Web Interface**
     - Flask/Streamlit web app
     - Interactive filtering and sorting
     - Drill-down to individual tool details
@@ -431,6 +438,14 @@ This script is provided as-is for educational and informational purposes.
 - **Format**: High-resolution PNG images (300 DPI)
 - **Output**: Saved to `visualizations/` directory
 - **Use**: Presentations, reports, and visual analysis
+
+### 14. Momentum Overlay
+- **Adds**: 3M, 6M, and 12M price returns to all stocks
+- **Identifies**: Value + Momentum opportunities (top value stocks with positive momentum)
+- **Warns**: Falling Knives (top value stocks with negative momentum/potential value traps)
+- **Scoring**: Composite momentum score and categorization
+- **Strategy**: Combines proven value and momentum investing approaches
+- **File**: `momentum_analysis_YYYYMMDD_HHMM.xlsx`
 
 ## Execution Time
 
