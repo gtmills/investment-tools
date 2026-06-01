@@ -205,89 +205,89 @@ Rank  Ticker  Grade           Percentile  Avg_Rank  Tools  Value  Magic  FCF  He
 
 The base data collector fetches 25+ metrics per stock.
 
+## Completed Features
+
+1. **Fix Value Ranker & Magic Formula Integration** ✅
+   - Value Ranker: Updated to use 'Rankings' sheet format
+   - Magic Formula: Fixed column name mismatches
+   - All 8/8 tools now load successfully in Master Aggregator
+
+2. **Add Sector/Industry to Master Rankings** ✅
+   - Sector and Industry columns included from source data
+   - Sector-based filtering and analysis enabled
+   - Supports diversification decisions
+
+3. **Historical Tracking System** ✅
+   - Saves dated copies of master rankings to historical-data/
+   - Tracks ranking changes over time
+   - Identifies consistent performers vs volatile rankings
+   - Generates trend analysis reports with biggest movers
+
+4. **Sector-Adjusted Rankings** ✅
+   - Calculate rankings within each sector
+   - Identify best stock per sector (displayed in console and Excel)
+   - New "Best Per Sector" Excel sheet showing top stock in each sector
+   - Sector-specific percentile rankings
+
+5. **Summary Statistics** ✅
+   - Sector concentration metrics in top 50 stocks
+   - Investment grade distribution
+   - Tool coverage statistics
+
+6. **CSV Export Option** ✅
+   - CSV export alongside Excel (csv-exports/ directory)
+   - Exports: top 100, all rankings, Grade A stocks
+   - Lighter format for programmatic analysis
+
+7. **Timestamp Outputs** ✅
+   - CSV files include timestamps in filenames (YYYYMMDD_HHMM format)
+   - Excel files include "Last Updated" field in Methodology sheet
+   - Enables tracking multiple analysis runs
+
+8. **Market Cap Distribution Analysis** ✅
+   - Displays market cap breakdown for top 50 stocks
+   - Categories: Mega Cap ($200B+), Large Cap ($10B-$200B), Mid Cap ($2B-$10B), Small Cap (<$2B)
+   - Shows count and percentage per category
+   - Helps assess portfolio size diversification
+
 ## Future Enhancements (TODO)
-
-### ✅ Completed
-
-1. **~~Fix Value Ranker & Magic Formula Integration~~** ✅
-   - ✅ Value Ranker: Updated to use 'Rankings' sheet format
-   - ✅ Magic Formula: Fixed column name mismatches
-   - ✅ All 8/8 tools now load successfully in Master Aggregator
-
-2. **~~Add Sector/Industry to Master Rankings~~** ✅
-   - ✅ Sector and Industry columns included from source data
-   - ✅ Sector-based filtering and analysis enabled
-   - ✅ Supports diversification decisions
-
-3. **~~Historical Tracking System~~** ✅
-   - ✅ Saves dated copies of master rankings to historical-data/
-   - ✅ Tracks ranking changes over time
-   - ✅ Identifies consistent performers vs volatile rankings
-   - ✅ Generates trend analysis reports with biggest movers
-
-8. **~~Summary Statistics~~** ✅
-   - ✅ Sector concentration metrics in top 50 stocks
-   - ✅ Investment grade distribution
-   - ✅ Tool coverage statistics
-
-9. **~~CSV Export Option~~** ✅
-   - ✅ CSV export alongside Excel (csv-exports/ directory)
-   - ✅ Exports: top 100, all rankings, Grade A stocks
-   - ✅ Lighter format for programmatic analysis
-
-4. **~~Sector-Adjusted Rankings~~** ✅
-   - ✅ Calculate rankings within each sector
-   - ✅ Identify best stock per sector (displayed in console and Excel)
-   - ✅ New "Best Per Sector" Excel sheet showing top stock in each sector
-   - ✅ Sector-specific percentile rankings
 
 ### High Priority
 
-5. **Portfolio Builder Tool**
+1. **Portfolio Builder Tool**
    - Generate diversified portfolios from top-ranked stocks
    - Apply constraints: max % per sector, max % per stock
    - Optimize for composite score while diversifying
 
-6. **Backtesting Framework**
+2. **Backtesting Framework**
    - Test strategy performance with historical data
    - Compare against S&P 500 benchmark
    - Calculate returns, Sharpe ratio, max drawdown
 
-7. **Alert System**
+3. **Alert System**
    - Monitor stocks moving into Grade A
    - Track significant ranking changes
    - Notify when new stocks enter top 50
 
-10. **~~Timestamp Outputs~~** ✅
-   - ✅ CSV files include timestamps in filenames (YYYYMMDD_HHMM format)
-   - ✅ Excel files include "Last Updated" field in Methodology sheet
-   - ✅ Enables tracking multiple analysis runs
-
-### Quick Wins
-
-5. **Market Cap Distribution Analysis**
-    - Include data collection date in filenames
-    - Add "Last Updated" field in Excel files
-
 ### Advanced Features
 
-11. **Visualization Dashboard**
+4. **Visualization Dashboard**
     - Grade distribution charts
     - Top 20 stocks bar chart
     - Sector breakdown analysis
     - Tool coverage heatmap
 
-12. **Momentum Overlay**
+5. **Momentum Overlay**
     - Add 3/6/12-month price momentum
     - Combine value + momentum strategy
     - Avoid falling knives
 
-13. **Insider Trading Integration**
+6. **Insider Trading Integration**
     - Track SEC Form 4 filings
     - Monitor insider buying/selling
     - Combine with value rankings
 
-14. **Web Interface**
+7. **Web Interface**
     - Flask/Streamlit web app
     - Interactive filtering and sorting
     - Drill-down to individual tool details
