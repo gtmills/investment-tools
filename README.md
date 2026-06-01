@@ -1,6 +1,6 @@
 # Investment Tools Suite
 
-A comprehensive Python-based toolkit for value investing analysis of S&P 500 stocks. This suite combines **8 specialized analysis tools** plus a **Master Aggregator** that ranks all stocks from 1-500 to identify the best investment opportunities.
+A comprehensive Python-based toolkit for value investing analysis of S&P 500 stocks. This suite combines **8 specialized analysis tools** plus **7 advanced tools** (Master Aggregator, Historical Tracker, Portfolio Builder, Alert System, Visualization Dashboard, Momentum Overlay, and Backtesting Framework) for a total of **15 powerful investment tools**.
 
 ## 🎯 Quick Start
 
@@ -9,7 +9,7 @@ A comprehensive Python-based toolkit for value investing analysis of S&P 500 sto
 python run_all_tools.py
 ```
 
-This executes all 9 tools in sequence (~15-25 minutes) and generates the master rankings.
+This executes the core 10 analysis tools in sequence (~15-25 minutes) and generates the master rankings.
 
 ## Overview
 
