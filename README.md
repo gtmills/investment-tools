@@ -317,28 +317,70 @@ The base data collector fetches 25+ metrics per stock.
 
 ### High Priority
 
-1. **Backtesting Framework**
-   - Test strategy performance with historical data
+1. **Web Dashboard**
+   - Streamlit or Flask web application
+   - Interactive filtering and sorting
+   - Real-time data updates
+   - Drill-down to individual tool details
+   - User authentication and saved portfolios
+
+2. **Automated Scheduling**
+   - Daily/weekly automated runs
+   - Email reports with top picks
+   - Alert notifications for significant changes
+   - Cloud deployment (AWS/Azure/GCP)
+
+3. **Enhanced Backtesting**
+   - Risk-adjusted metrics (Sharpe ratio, Sortino ratio, max drawdown)
    - Compare against S&P 500 benchmark
-   - Calculate returns, Sharpe ratio, max drawdown
+   - Monte Carlo simulations
+   - Transaction cost modeling
+   - Rebalancing strategies
 
 ### Advanced Features
 
-2. **Visualization Dashboard**
-    - Grade distribution charts
-    - Top 20 stocks bar chart
-    - Sector breakdown analysis
-    - Tool coverage heatmap
+4. **Insider Trading Integration**
+   - Track SEC Form 4 filings
+   - Monitor insider buying/selling patterns
+   - Combine insider activity with value rankings
+   - Identify unusual insider activity
 
-2. **Insider Trading Integration**
-    - Track SEC Form 4 filings
-    - Monitor insider buying/selling
-    - Combine with value rankings
+5. **API Development**
+   - RESTful API for programmatic access
+   - Real-time ranking queries
+   - Historical data endpoints
+   - Webhook notifications for alerts
 
-2. **Web Interface**
-    - Flask/Streamlit web app
-    - Interactive filtering and sorting
-    - Drill-down to individual tool details
+6. **Database Integration**
+   - PostgreSQL/MySQL for historical data storage
+   - Time-series analysis capabilities
+   - Faster queries and data retrieval
+   - Data versioning and audit trails
+
+7. **Machine Learning Models**
+   - Predict future stock performance
+   - Identify patterns in successful picks
+   - Anomaly detection for unusual rankings
+   - Natural language processing for news sentiment
+
+8. **Configuration Management**
+   - YAML/JSON configuration files
+   - Customizable scoring weights
+   - User-defined thresholds and filters
+   - Multiple strategy profiles
+
+9. **Docker Containerization**
+   - Dockerfile for easy deployment
+   - Docker Compose for multi-container setup
+   - Consistent environment across platforms
+   - Simplified dependency management
+
+10. **Testing and CI/CD**
+    - Unit tests for all modules
+    - Integration tests for workflows
+    - GitHub Actions for automated testing
+    - Code coverage reporting
+    - Automated deployment pipeline
 
 ## License
 
