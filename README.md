@@ -13,7 +13,7 @@ This executes all 9 tools in sequence (~15-25 minutes) and generates the master 
 
 ## Overview
 
-This project provides eight specialized analysis tools, a master aggregator, and a historical tracker:
+This project provides eight specialized analysis tools, a master aggregator, a historical tracker, and a portfolio builder:
 
 1. **Value Ranker** - Traditional value metrics (P/E, P/B, PEG)
 2. **Magic Formula** - Joel Greenblatt's quality + value strategy
@@ -25,6 +25,7 @@ This project provides eight specialized analysis tools, a master aggregator, and
 8. **Earnings Quality** - Profitability and earnings analysis
 9. **Master Aggregator** - Combines all rankings (1-500 scale)
 10. **Historical Tracker** - Track ranking changes over time
+11. **Portfolio Builder** - Generate diversified portfolios with constraints
 
 ## Key Features
 
@@ -118,8 +119,12 @@ investment-tools/
 │   ├── master_aggregator.py
 │   └── README.md
 │
-└── historical-tracker/                 # Track changes over time
-    ├── historical_tracker.py
+├── historical-tracker/                 # Track changes over time
+│   ├── historical_tracker.py
+│   └── README.md
+│
+└── portfolio-builder/                  # Generate portfolios
+    ├── portfolio_builder.py
     └── README.md
 ```
 
@@ -207,44 +212,52 @@ The base data collector fetches 25+ metrics per stock.
 
 ## Completed Features
 
-1. **Fix Value Ranker & Magic Formula Integration** ✅
+1. **Portfolio Builder Tool** ✅
+   - Generates diversified portfolios from top-ranked stocks
+   - Applies sector concentration limits (max 25-35% per sector)
+   - Enforces position size constraints (max 8-12% per stock)
+   - Three pre-built strategies: Conservative, Balanced, Aggressive
+   - Equal-weight allocation within constraints
+   - Detailed Excel reports with holdings and sector breakdown
+
+2. **Fix Value Ranker & Magic Formula Integration** ✅
    - Value Ranker: Updated to use 'Rankings' sheet format
    - Magic Formula: Fixed column name mismatches
    - All 8/8 tools now load successfully in Master Aggregator
 
-2. **Add Sector/Industry to Master Rankings** ✅
+3. **Add Sector/Industry to Master Rankings** ✅
    - Sector and Industry columns included from source data
    - Sector-based filtering and analysis enabled
    - Supports diversification decisions
 
-3. **Historical Tracking System** ✅
+4. **Historical Tracking System** ✅
    - Saves dated copies of master rankings to historical-data/
    - Tracks ranking changes over time
    - Identifies consistent performers vs volatile rankings
    - Generates trend analysis reports with biggest movers
 
-4. **Sector-Adjusted Rankings** ✅
+5. **Sector-Adjusted Rankings** ✅
    - Calculate rankings within each sector
    - Identify best stock per sector (displayed in console and Excel)
    - New "Best Per Sector" Excel sheet showing top stock in each sector
    - Sector-specific percentile rankings
 
-5. **Summary Statistics** ✅
+6. **Summary Statistics** ✅
    - Sector concentration metrics in top 50 stocks
    - Investment grade distribution
    - Tool coverage statistics
 
-6. **CSV Export Option** ✅
+7. **CSV Export Option** ✅
    - CSV export alongside Excel (csv-exports/ directory)
    - Exports: top 100, all rankings, Grade A stocks
    - Lighter format for programmatic analysis
 
-7. **Timestamp Outputs** ✅
+8. **Timestamp Outputs** ✅
    - CSV files include timestamps in filenames (YYYYMMDD_HHMM format)
    - Excel files include "Last Updated" field in Methodology sheet
    - Enables tracking multiple analysis runs
 
-8. **Market Cap Distribution Analysis** ✅
+9. **Market Cap Distribution Analysis** ✅
    - Displays market cap breakdown for top 50 stocks
    - Categories: Mega Cap ($200B+), Large Cap ($10B-$200B), Mid Cap ($2B-$10B), Small Cap (<$2B)
    - Shows count and percentage per category
@@ -254,40 +267,35 @@ The base data collector fetches 25+ metrics per stock.
 
 ### High Priority
 
-1. **Portfolio Builder Tool**
-   - Generate diversified portfolios from top-ranked stocks
-   - Apply constraints: max % per sector, max % per stock
-   - Optimize for composite score while diversifying
-
-2. **Backtesting Framework**
+1. **Backtesting Framework**
    - Test strategy performance with historical data
    - Compare against S&P 500 benchmark
    - Calculate returns, Sharpe ratio, max drawdown
 
-3. **Alert System**
+2. **Alert System**
    - Monitor stocks moving into Grade A
    - Track significant ranking changes
    - Notify when new stocks enter top 50
 
 ### Advanced Features
 
-4. **Visualization Dashboard**
+3. **Visualization Dashboard**
     - Grade distribution charts
     - Top 20 stocks bar chart
     - Sector breakdown analysis
     - Tool coverage heatmap
 
-5. **Momentum Overlay**
+4. **Momentum Overlay**
     - Add 3/6/12-month price momentum
     - Combine value + momentum strategy
     - Avoid falling knives
 
-6. **Insider Trading Integration**
+5. **Insider Trading Integration**
     - Track SEC Form 4 filings
     - Monitor insider buying/selling
     - Combine with value rankings
 
-7. **Web Interface**
+6. **Web Interface**
     - Flask/Streamlit web app
     - Interactive filtering and sorting
     - Drill-down to individual tool details
@@ -381,6 +389,13 @@ This script is provided as-is for educational and informational purposes.
 - **Features**: Trend analysis, biggest movers, new entries
 - **Output**: Dated snapshots and comparison reports
 - **File**: `historical-data/rankings_YYYY-MM-DD.xlsx`
+
+### 11. Portfolio Builder
+- **Generates**: Diversified portfolios from top stocks
+- **Constraints**: Sector limits (25-35%), position limits (8-12%)
+- **Strategies**: Conservative (20 stocks), Balanced (25 stocks), Aggressive (30 stocks)
+- **Output**: Excel files with holdings, allocations, and sector breakdown
+- **Files**: `portfolio_conservative.xlsx`, `portfolio_balanced.xlsx`, `portfolio_aggressive.xlsx`
 
 ## Execution Time
 

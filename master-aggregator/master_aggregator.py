@@ -49,14 +49,14 @@ def load_company_info() -> pd.DataFrame:
     Load company information from the source data file
     
     Returns:
-        DataFrame with Ticker, Company, Sector, and Industry columns
+        DataFrame with Ticker, Company, Sector, Industry, and Market Cap columns
     """
     try:
         df = pd.read_excel('sp500_pe_sorted.xlsx', sheet_name='Stocks with PE')
-        return df[['Ticker', 'Company', 'Sector', 'Industry']].copy()
+        return df[['Ticker', 'Company', 'Sector', 'Industry', 'Market Cap']].copy()
     except Exception as e:
         print(f"Warning: Could not load company information: {e}")
-        return pd.DataFrame(columns=['Ticker', 'Company', 'Sector', 'Industry'])
+        return pd.DataFrame(columns=['Ticker', 'Company', 'Sector', 'Industry', 'Market Cap'])
 
 
 def aggregate_rankings() -> pd.DataFrame:
@@ -270,6 +270,39 @@ def display_results(df: pd.DataFrame, loaded_tools: list, top_n: int = 50):
         top_50_sectors = df.head(50)['Sector'].value_counts()
         for sector, count in top_50_sectors.head(10).items():
             print(f"  {sector}: {count} stocks ({count/50*100:.1f}%)")
+    
+    # Market cap distribution
+    if 'Market Cap' in df.columns:
+        print(f"\nMarket Cap Distribution (Top 50 Stocks):")
+        top_50 = df.head(50).copy()
+        
+        # Categorize by market cap
+        def categorize_market_cap(market_cap):
+            if pd.isna(market_cap):
+                return 'Unknown'
+            try:
+                # Market cap values are in dollars, convert to billions
+                cap_billions = float(market_cap) / 1_000_000_000
+                if cap_billions >= 200:
+                    return 'Mega Cap ($200B+)'
+                elif cap_billions >= 10:
+                    return 'Large Cap ($10B-$200B)'
+                elif cap_billions >= 2:
+                    return 'Mid Cap ($2B-$10B)'
+                else:
+                    return 'Small Cap (<$2B)'
+            except:
+                return 'Unknown'
+        
+        top_50['Cap_Category'] = top_50['Market Cap'].apply(categorize_market_cap)
+        cap_dist = top_50['Cap_Category'].value_counts()
+        
+        # Define order for display
+        cap_order = ['Mega Cap ($200B+)', 'Large Cap ($10B-$200B)', 'Mid Cap ($2B-$10B)', 'Small Cap (<$2B)', 'Unknown']
+        for cap_cat in cap_order:
+            if cap_cat in cap_dist.index:
+                count = cap_dist[cap_cat]
+                print(f"  {cap_cat:30s}: {count} stocks ({count/50*100:.1f}%)")
     
     print(f"\nTop 10 Best Opportunities:")
     for i, row in df.head(10).iterrows():
