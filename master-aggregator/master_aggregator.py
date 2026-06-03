@@ -138,7 +138,8 @@ def aggregate_rankings() -> pd.DataFrame:
     
     # Calculate average rank (lower is better)
     # Only average across tools where the stock has a ranking
-    rank_columns = [col for col in merged_df.columns if col not in ['Ticker', 'Company', 'Sector', 'Industry']]
+    # Exclude non-ranking columns: Ticker, Company, Sector, Industry, Market Cap
+    rank_columns = [col for col in merged_df.columns if col not in ['Ticker', 'Company', 'Sector', 'Industry', 'Market Cap']]
     
     # Calculate average rank (ignoring NaN values)
     merged_df['Average_Rank'] = merged_df[rank_columns].mean(axis=1, skipna=True)
