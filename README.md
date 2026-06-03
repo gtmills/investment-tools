@@ -1,6 +1,6 @@
 # Investment Tools Suite
 
-A comprehensive Python-based toolkit for value investing analysis of S&P 500 stocks. This suite combines **8 specialized analysis tools** plus **7 advanced tools** (Master Aggregator, Historical Tracker, Portfolio Builder, Alert System, Visualization Dashboard, Momentum Overlay, and Backtesting Framework) for a total of **15 powerful investment tools**.
+A comprehensive Python-based toolkit for value investing analysis of S&P 500 stocks. This suite includes **8 core analysis tools**, **1 master aggregator**, and **6 advanced enhancement tools** for a total of **15 powerful investment tools**.
 
 ## 🎯 Quick Start
 
@@ -13,8 +13,9 @@ This executes the core 10 analysis tools in sequence (~15-25 minutes) and genera
 
 ## Overview
 
-This project provides eight specialized analysis tools, a master aggregator, a historical tracker, a portfolio builder, an alert system, a visualization dashboard, a momentum overlay, and a backtesting framework:
+This project provides a complete investment analysis workflow:
 
+### Core Analysis Tools (8 tools)
 1. **Value Ranker** - Traditional value metrics (P/E, P/B, PEG)
 2. **Magic Formula** - Joel Greenblatt's quality + value strategy
 3. **Free Cash Flow Analyzer** - Cash generation metrics
@@ -23,7 +24,11 @@ This project provides eight specialized analysis tools, a master aggregator, a h
 6. **Dividend Aristocrats** - Dividend quality and consistency
 7. **Historical Valuation** - Sector-relative valuations
 8. **Earnings Quality** - Profitability and earnings analysis
-9. **Master Aggregator** - Combines all rankings (1-500 scale)
+
+### Master Aggregator (1 tool)
+9. **Master Aggregator** - Combines all 8 core tool rankings into composite scores (1-500 scale)
+
+### Advanced Enhancement Tools (6 tools)
 10. **Historical Tracker** - Track ranking changes over time
 11. **Portfolio Builder** - Generate diversified portfolios with constraints
 12. **Alert System** - Monitor ranking changes and significant movements
@@ -33,11 +38,12 @@ This project provides eight specialized analysis tools, a master aggregator, a h
 
 ## Key Features
 
-- **Comprehensive Analysis**: 8 different investment methodologies
+- **Comprehensive Analysis**: 8 core investment methodologies
 - **Master Rankings**: Composite scores from 1-500 (1 = best opportunity)
 - **Investment Grades**: A+ to F grading system
-- **Automated Workflow**: Run all tools with one command
-- **Excel Outputs**: Detailed spreadsheets for each analysis
+- **Automated Workflow**: Run core tools with one command (`run_all_tools.py`)
+- **Advanced Enhancements**: 6 additional tools for deeper analysis
+- **Excel & CSV Outputs**: Detailed spreadsheets and CSV exports
 - **S&P 500 Coverage**: Analyzes all ~500 stocks
 
 ### Data Fields Included
@@ -167,13 +173,15 @@ pip install requests beautifulsoup4 pandas yfinance lxml openpyxl
 
 ## Usage
 
-### Option 1: Run Everything (Recommended)
+### Option 1: Run Core Analysis (Recommended)
 
 ```bash
 python run_all_tools.py
 ```
 
-This runs all 9 tools in sequence and generates the master rankings. Takes 15-25 minutes.
+This runs the 8 core analysis tools plus the Master Aggregator in sequence (9 tools total). Takes 15-25 minutes.
+
+**Note**: Advanced tools (Historical Tracker, Portfolio Builder, Alert System, Visualization, Momentum, Backtesting) must be run separately as needed.
 
 ### Option 2: Run Tools Individually
 
@@ -511,6 +519,7 @@ This script is provided as-is for educational and informational purposes.
 
 ## Execution Time
 
+### Core Analysis Tools (via run_all_tools.py)
 - **S&P 500 Data Collector**: 5-10 minutes
 - **Value Ranker**: < 1 minute
 - **Magic Formula**: < 1 minute
@@ -522,7 +531,15 @@ This script is provided as-is for educational and informational purposes.
 - **Earnings Quality**: < 1 minute
 - **Master Aggregator**: < 1 minute
 
-**Total**: 15-25 minutes for complete analysis
+**Core Analysis Total**: 15-25 minutes
+
+### Advanced Tools (run separately as needed)
+- **Historical Tracker**: < 1 minute
+- **Portfolio Builder**: < 1 minute
+- **Alert System**: < 1 minute
+- **Visualization Dashboard**: 1-2 minutes
+- **Momentum Overlay**: 2-5 minutes (fetches price data)
+- **Backtesting Framework**: 5-10 minutes (fetches historical data)
 
 ## Troubleshooting
 

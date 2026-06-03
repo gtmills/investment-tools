@@ -47,11 +47,11 @@ def run_tool(name: str, script_path: str, description: str) -> bool:
 def main():
     """Main execution function"""
     print("="*140)
-    print("INVESTMENT TOOLS SUITE - COMPLETE ANALYSIS")
+    print("INVESTMENT TOOLS SUITE - CORE ANALYSIS")
     print("="*140)
-    print("\nThis will run all 9 investment analysis tools in sequence.")
+    print("\nThis will run the 8 core analysis tools plus Master Aggregator (9 tools total).")
     print("Total estimated time: 15-25 minutes")
-    print("\nTools to run:")
+    print("\nCore Analysis Tools:")
     print("  1. S&P 500 Data Collector (5-10 min)")
     print("  2. Value Ranker (<1 min)")
     print("  3. Magic Formula Screener (<1 min)")
@@ -61,7 +61,10 @@ def main():
     print("  7. Dividend Aristocrats Screener (5-10 min)")
     print("  8. Historical Valuation Analyzer (<1 min)")
     print("  9. Earnings Quality Analyzer (<1 min)")
+    print("\nAggregation:")
     print(" 10. Master Aggregator (<1 min)")
+    print("\nNote: Advanced tools (Historical Tracker, Portfolio Builder, Alert System,")
+    print("      Visualization, Momentum, Backtesting) must be run separately.")
     print("\n" + "="*140)
     
     # Auto-start without confirmation

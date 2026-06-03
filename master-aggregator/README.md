@@ -4,12 +4,14 @@ Combines rankings from all investment analysis tools to identify the best overal
 
 ## Overview
 
-The Master Aggregator is the final step in the investment analysis workflow. It:
-1. Loads rankings from all 8 investment tools
+The Master Aggregator is the final step in the core investment analysis workflow. It:
+1. Loads rankings from all 8 core analysis tools
 2. Calculates average rank for each stock
 3. Assigns composite scores (1-500, lower = better)
 4. Grades stocks from A+ to F
 5. Identifies the top investment opportunities
+
+**Note**: The Master Aggregator only combines the 8 core analysis tools. Advanced tools (Historical Tracker, Portfolio Builder, Alert System, Visualization, Momentum, Backtesting) are separate enhancement tools that work with the master rankings.
 
 ## How It Works
 
@@ -45,7 +47,7 @@ Run all individual tools first:
 cd value-ranker
 python sp500_pe_sorter.py
 
-# 2. Run all analysis tools
+# 2. Run all 8 core analysis tools
 cd ../value-ranker && python value_ranker.py
 cd ../magic-formula && python magic_formula_screener.py
 cd ../fcf-analyzer && python fcf_analyzer.py
@@ -54,14 +56,17 @@ cd ../graham-calculator && python graham_calculator.py
 cd ../dividend-aristocrats && python dividend_aristocrats.py
 cd ../historical-valuation && python historical_valuation.py
 cd ../earnings-quality && python earnings_quality.py
-```
 
-### Run the Aggregator
-
-```bash
-cd master-aggregator
+# 3. Run the Master Aggregator
+cd ../master-aggregator
 python master_aggregator.py
 ```
+
+**Or use the automated script:**
+```bash
+python run_all_tools.py
+```
+This runs all 8 core tools plus the Master Aggregator automatically.
 
 ## Output
 
